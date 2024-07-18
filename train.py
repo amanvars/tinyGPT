@@ -1,17 +1,21 @@
 import torch
-from utils import read_text, train_val_split
+# from utils import read_text, train_val_split
 from models import BigramLanguageModel
 
 
 #variables
-batch_size = 32
-block_size = 8
+batch_size = 64
+block_size = 256
 max_iters = 5000
 eval_interval = 500
 eval_iters = 200
-learning_rate = 1e-3
+learning_rate = 3e-4
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-n_embd = 32
+n_embd = 384
+n_head = 6
+n_layer = 6
+dropout = 0.2
+
 # head_size = 32
 torch.manual_seed(1337)
 
@@ -65,7 +69,7 @@ def estimate_loss():
     return out
 
 
-model = BigramLanguageModel(block_size, vocab_size, n_embd)
+model = BigramLanguageModel(block_size, vocab_size, 4, n_embd, n_layer, dropout)
 model = model.to(device)
 
 # create a pytorch optimizer
